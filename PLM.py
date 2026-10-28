@@ -6,7 +6,12 @@ import os
 try:
     from template_schema import conform_to_template
 except ImportError:
-    from scripts.template_schema import conform_to_template
+    try:
+        from scripts.template_schema import conform_to_template
+    except ImportError:
+        def conform_to_template(df: pd.DataFrame, rename_map=None) -> pd.DataFrame:
+            """Apply available column renames when the shared template module is absent."""
+            return df.rename(columns=rename_map or {}).copy()
 
 # =========================
 # CARRIER CONFIGURATION
