@@ -774,3 +774,35 @@ def _to_template(df: pd.DataFrame) -> pd.DataFrame:
         "PaidLoss": "Paid/Loss NOC",
         "Outstanding": "Reserve NOC",
     })
+
+
+# ================= LOCAL FILE RUNNER =================
+LOCAL_PLM_DIRECTORY = r"C:\Users\Samarth\Documents\LLama\PLM"
+
+
+def process_local_pdfs(directory: str = LOCAL_PLM_DIRECTORY) -> None:
+    """Extract every PDF in directory and save its Excel output beside it."""
+    if not os.path.isdir(directory):
+        raise FileNotFoundError(f"PLM directory not found: {directory}")
+
+    pdf_files = sorted(
+        filename
+        for filename in os.listdir(directory)
+        if filename.lower().endswith(".pdf")
+    )
+
+    if not pdf_files:
+        raise FileNotFoundError(f"No PDF files found in: {directory}")
+
+    for filename in pdf_files:
+        input_path = os.path.join(directory, filename)
+        output_name = f"{os.path.splitext(filename)[0]}_output.xlsx"
+        output_path = os.path.join(directory, output_name)
+
+        extracted_data = extract(input_path)
+        extracted_data.to_excel(output_path, index=False)
+        print(f"✅ Output saved: {output_path}")
+
+
+if __name__ == "__main__":
+    process_local_pdfs()
