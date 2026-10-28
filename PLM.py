@@ -480,9 +480,6 @@ def parse_claim_block(block, account, valuation_date):
     if len(cleaned_money) >= 2:
         data["Outstanding"] = cleaned_money[1]
 
-    if len(cleaned_money) >= 3:
-        data["Expense"] = cleaned_money[2]
-
     # =====================
     # LOSS TYPE
     # =====================
